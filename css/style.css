@@ -1,0 +1,545 @@
+/* ==========================================================================
+   ASPAC新潟大会 福山JCコミュニティサイト - プレミアムスタイルシート (ライトテーマ版)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. デザインシステム・変数定義 (福山JCコーポレートサイト配色)
+   -------------------------------------------------------------------------- */
+:root {
+  /* カラーパレット */
+  --color-brand-blue-dark: #1f3a60;  /* 深い福山ブルー（テキスト、フォーマルパーツ） */
+  --color-brand-blue-mid: #3A67B1;   /* 福山JC公式ロイヤルブルー */
+  --color-brand-blue-light: #3999d5; /* 福山JC公式スカイブルー */
+  
+  --color-accent-orange: #ff8d01;    /* 福山JCアクセントオレンジ */
+  --color-accent-gold: #fcb900;      /* ゴールド */
+  
+  /* グラデーション */
+  --grad-primary: linear-gradient(135deg, var(--color-brand-blue-mid) 0%, var(--color-brand-blue-light) 100%);
+  --grad-accent: linear-gradient(135deg, var(--color-accent-orange) 0%, var(--color-accent-gold) 100%);
+  --grad-bg: linear-gradient(135deg, #f3f7fa 0%, #e6f0fa 100%); /* 明るく爽やかな背景 */
+  --grad-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 100%); /* ライト用グラス */
+  
+  /* テキスト色 */
+  --text-main: #1f2937;       /* ダークグレー（読みやすい黒） */
+  --text-muted: #556070;      /* 少し青みのあるグレー */
+  --text-dark: #ffffff;       /* 反転時の白 */
+  
+  /* その他 */
+  --border-glass: rgba(0, 0, 0, 0.08);
+  --border-focus: rgba(58, 103, 177, 0.5);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 58, 96, 0.06);
+  --shadow-glow: 0 0 20px rgba(58, 103, 177, 0.15);
+  --radius-lg: 16px;
+  --radius-md: 8px;
+  --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --font-display: 'Outfit', 'Noto Sans JP', sans-serif;
+  --font-body: 'Inter', 'Noto Sans JP', sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   2. リセット & 基本設定
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--grad-bg);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: var(--color-brand-blue-mid);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+
+a:hover {
+  color: var(--color-accent-orange);
+}
+
+iframe {
+  border: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. ボタン & 共通UIエレメント
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  border: none;
+  outline: none;
+}
+
+.btn-primary {
+  background: var(--grad-accent);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 141, 1, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 141, 1, 0.4);
+  opacity: 0.95;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border-glass);
+  color: var(--color-brand-blue-mid);
+  backdrop-filter: blur(4px);
+}
+
+.btn-outline:hover {
+  background: var(--color-brand-blue-mid);
+  border-color: var(--color-brand-blue-mid);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(58, 103, 177, 0.15);
+}
+
+/* スピナーと空状態 */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 20px;
+  color: var(--text-muted);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 0, 0, 0.05);
+  border-top-color: var(--color-brand-blue-mid);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: var(--grad-glass);
+  border: 1px dashed rgba(58, 103, 177, 0.2);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-glass);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.7;
+  color: var(--color-brand-blue-light);
+}
+
+.empty-sub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   4. メインアプリケーションレイアウト
+   -------------------------------------------------------------------------- */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ヘッダー (福山JCブルーをメインにしたヘッダー) */
+.main-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-brand-blue-mid);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(31, 58, 96, 0.1);
+}
+
+.header-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: 0.05em;
+  color: #fff;
+}
+
+.logo-text span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.tab-navigation {
+  display: flex;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 4px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-smooth);
+}
+
+.tab-btn:hover {
+  color: #fff;
+}
+
+.tab-btn.active {
+  background: #ffffff;
+  color: var(--color-brand-blue-mid);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* メインコンテンツ */
+.main-content {
+  flex: 1;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.content-section {
+  display: none;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.content-section.active {
+  display: block;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.section-header h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--color-brand-blue-dark) 0%, var(--color-brand-blue-mid) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+}
+
+.section-desc {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. タブコンテンツ別スタイル
+   -------------------------------------------------------------------------- */
+
+/* 📸 5-1. ギャラリー */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.photo-card {
+  background: var(--grad-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-glass);
+  transition: var(--transition-smooth);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-brand-blue-mid);
+  box-shadow: 0 12px 24px rgba(31, 58, 96, 0.08), var(--shadow-glow);
+}
+
+.photo-img-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 70%; /* 10:7 アスペクト比 */
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.photo-img-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.photo-card:hover .photo-img-wrapper img {
+  transform: scale(1.08);
+}
+
+.photo-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.photo-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-brand-blue-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.photo-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* 📖 5-2. しおり (PDF) */
+.pdf-viewer-container {
+  width: 100%;
+  height: 75vh;
+  background: var(--grad-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(10px);
+}
+
+.pdf-viewer-container iframe {
+  width: 100%;
+  height: 100%;
+}
+
+/* 🎥 5-3. YouTube Live */
+.youtube-player-container {
+  max-width: 960px;
+  margin: 0 auto;
+  background: var(--grad-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(10px);
+}
+
+.youtube-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 アスペクト比 */
+}
+
+.youtube-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   6. モーダル (拡大表示 - 背景は画像が際立つダークで維持)
+   -------------------------------------------------------------------------- */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(6, 14, 28, 0.95);
+  backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 40px 20px;
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  max-width: 90%;
+  max-height: 80vh;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  animation: zoomIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-caption {
+  margin: 20px auto 0;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.close-modal {
+  position: absolute;
+  top: 25px;
+  right: 35px;
+  color: #f3f4f6;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.close-modal:hover {
+  color: var(--color-accent-orange);
+  transform: rotate(90deg);
+}
+
+/* --------------------------------------------------------------------------
+   7. アニメーション定義
+   -------------------------------------------------------------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   8. レスポンシブ対応
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    padding: 16px;
+    gap: 15px;
+  }
+  
+  .tab-navigation {
+    width: 100%;
+    justify-content: space-around;
+  }
+  
+  .tab-btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .section-header .btn {
+    width: 100%;
+  }
+
+  .pdf-viewer-container {
+    height: 60vh;
+  }
+}
+
+/* 日付ごとのグループセクション */
+.date-section {
+  margin-bottom: 50px;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.date-section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-brand-blue-dark);
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-brand-blue-light);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.date-section-title .photo-count {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
